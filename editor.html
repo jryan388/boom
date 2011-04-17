@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
-<title>KaBoom</title>
+<title>KaBoomEdit</title>
 
 <link rel="stylesheet" type="text/css" href="style.css"></link>
 
@@ -8,16 +8,31 @@
 <script type="text/javascript" src="engine/mouse.js"></script>
 <script type="text/javascript" src="engine/tile.js"></script>
 <script type="text/javascript" src="engine/map.js"></script>
-<script type="text/javascript" src="engine/character.js"></script>
-<script type="text/javascript" src="engine/animate.js"></script>
-<script type="text/javascript" src="boom.js"></script>
+<script type="text/javascript" src="engine/editor.js"></script>
+<script type="text/javascript" src="engine/perlin/jquery-perlin.js"></script>
+<script type="text/javascript" src="editor.js"></script>
 </head>
 
 <body>
-<h1><center>KaBoom!</center></h1>
+<h1><center>KaBoom! Editor</center></h1>
 <div id="main">
   <canvas id="game-canvas" width=500 height=500></canvas>
 </div>
+<center><p>Controls:
+<br>
+r - Rocks
+<br>
+m - Mountain
+<br>
+w- Water
+<br>
+d - Dirt
+<br>
+<br>
+<br>
+z - randomize map
+<br>
+</p></center>
 
 <hr>
 <center>
