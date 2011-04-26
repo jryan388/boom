@@ -18,41 +18,30 @@ $.extend(Tile.prototype, {
 	    this.z = z;
 	    this.size = size;
 	    this.material = material;
+	    this.image = new Image();
 	    
     },
     
-    draw: function(context) {
-    
-        context.clearRect(this.x, this.y, this.size, this.size);
+    draw: function(map) {
         
-        var pic = new Image();
-	    var x = this.x;
-	    var y = this.y;
+        //map.context.clearRect(this.x, this.y, this.size, this.size);
+        
+        var self = this;
+        
+        var pic = document.getElementById(map.materials[this.material] + this.size);
+        map.context.drawImage(pic, self.x, self.y);
+        
+        //var pic = new Image();
+	    //pic.src = map.materialSrc[self.material]
+	    //pic.onload = function() { 
+	    //    map.context.drawImage(pic, self.x, self.y); 
+	    //};
 	    
-        switch(this.size) {
-            case 20:
-                switch (this.material) {
-                    case "rocks":
-                        pic.src = "pics/rock20.png"
-                        break;
-                    case "water":
-                        pic.src = "pics/water20.png"
-                        break;
-                    case "mountain":
-                        pic.src = "pics/mountain20.png"
-                        break;
-                    case "dirt":
-                        // console.log("perlin");
-                        // $(this.image).perlin({tileSize: 20});
-                        pic.src = "pics/dirt20.png"
-                        // console.log(this.image);
-                        break;
-                        
-                }
-                break;
-        }
-	    pic.onload = function() {context.drawImage(pic, x, y);};
-	    console.log("lksdfjlskdf");
+	    //console.log(map.materialPics[self.material]);
+	    //map.context.drawImage(map.materialPics[self.material], self.x, self.y);
+	    
+	    //this.image.src = map.materialSrc[self.material];
+	    
 	    
     },
     

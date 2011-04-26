@@ -10,6 +10,8 @@ $.extend(Map.prototype, {
     w: null,
     h: null,
     numTiles: null,
+    materials: [],
+    materialSrc: [],
     
     init: function(context, width, height, tileSize, tileType) {
 	    this.context = context;
@@ -19,25 +21,42 @@ $.extend(Map.prototype, {
 	
 	    this.numTiles = this.w * this.h;
 	    
+	    // array of material types
+	    this.materials[0] = "dirt";
+	    this.materials[1] = "water";
+	    this.materials[2] = "rock";
+	    this.materials[3] = "mountain";
 	    
+	    // preload image for each material
+	    for (i=0 ; i<=3; ++i) {
+	        // this.materials[i] = new Image();
+	        var src = "pics/" + this.materials[i] + this.tileSize + ".png";
+	        this.materialSrc[i] = src;
+	        
+	    }
 	    
-	    
-	    // var logTime = function() { var date = new Date; var time = date.getTime(); console.log(time);}
-	    
+	    // console.log("Making Map:");
+        // logTime();
 	    for(var i=0; i<this.numTiles; i++) {
 	        var w = i%this.w;
 	        var h = Math.floor(i/this.w);
-	        var tile = new Tile(w*this.tileSize, h*this.tileSize, 0, tileSize, "dirt");
+	        var tile = new Tile(w*this.tileSize, h*this.tileSize, 0, tileSize, 0);
 	        this.tiles.push(tile);
-	        // logTime();
 	    }
-	    
+	    // console.log("Finished Making Map:");
+        // logTime();
     },
     
     draw: function() {
-	    for(var i=0; i<this.numTiles; i++) {
-	        this.tiles[i].draw(this.context);
-	    }
+        // console.log("Drawing Map:");
+        // logTime();
+        // this.context.clearRect(0, 0, this.w*this.tileSize, this.h*this.tileSize);
+        for(var i=0; i<this.numTiles; i++) {
+            this.tiles[i].draw(this);
+        }
+	    // console.log("Finished Drawing Map:");
+	    // logTime();
+	    
     },
     
     findTile: function(x, y) {
@@ -70,3 +89,4 @@ $.extend(Map.prototype, {
         }
     }
 });
+1

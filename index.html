@@ -9,14 +9,27 @@
 <script type="text/javascript" src="engine/tile.js"></script>
 <script type="text/javascript" src="engine/map.js"></script>
 <script type="text/javascript" src="engine/character.js"></script>
-<script type="text/javascript" src="engine/animate.js"></script>
+<script type="text/javascript" src="engine/render.js"></script>
 <script type="text/javascript" src="boom.js"></script>
 </head>
 
 <body>
 <h1><center>KaBoom!</center></h1>
 <div id="main">
-  <canvas id="game-canvas" width=500 height=500></canvas>
+    <canvas id="game-canvas" width=500 height=500></canvas>
+</div>
+
+<div id="hidden">
+    <img    id= "dirt20"
+            src = "pics/dirt20.png">
+    <img    id= "water20"
+            src = "pics/water20.png">
+    <img    id= "rock20"
+            src = "pics/rock20.png">
+    <img    id= "mountain20"
+            src = "pics/mountain20.png">
+    <img    id= "knight-small"
+            src = "pics/knight-small.png">
 </div>
 
 <hr>
@@ -25,4 +38,7 @@
 <!-- hhmts start --> Last modified: Sun Apr 10 13:42:46 MDT 2011 <!-- -->
 <!--hhmts end -->
 </center>
+
+<!-- Some ideas for game code credited to dougx.net -->
+
 </body> </html>

@@ -18,6 +18,7 @@ $(function() {
     
     var editMaterial = "dirt";
     
+    $("body").perlin();
     
     $("#game-canvas").click(function(event) {
 	
@@ -41,19 +42,19 @@ $(function() {
             // hotkeys for changing material
             case 100: // d
                 console.log("Handler for .keypress() for d called");
-                editMaterial = "dirt";
-                break;
-            case 114: // r
-                console.log("Handler for .keypress() for r called");
-                editMaterial = "rocks";
+                editMaterial = 0;
                 break;
             case 119: // w
                 console.log("Handler for .keypress() for w called");
-                editMaterial = "water";
+                editMaterial = 1;
+                break;
+            case 114: // r
+                console.log("Handler for .keypress() for r called");
+                editMaterial = 2;
                 break;
             case 109: // m
                 console.log("Handler for .keypress() for m called");
-                editMaterial = "mountain";
+                editMaterial = 3;
                 break;
             default:
                 console.log("Keycode " + keyPressed + " pressed");

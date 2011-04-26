@@ -10,44 +10,62 @@ $.extend(Character.prototype, {
     speed: null,
     sprite: null,
     
-    init: function(x, y, size, speed, sprite) {
+    init: function(x1, y1, size, speed, sprite) {
 	// do initialization here
-    	this.x = x;
-    	this.y = y;
+    	this.x1 = x1;
+    	this.y1 = y1;
+    	this.x2 = x1;
+    	this.y2 = y1;
 	    this.size = size;
 	    this.speed = speed;
-	    this.sprite = new Image();
-	    this.sprite.src = sprite;
+	    this.sprite = sprite;
+	    console.log("drawing character " + sprite);
 	    
     },
     
     draw: function(context) {
-        console.log("draw function" + " " + this.x + " " + this.y);
+        var self = this;
+        // console.log("draw function " + self.x1 + " " + self.y1);
 	    var d = Math.floor(this.size/2);
-	    var xcoord = this.x-d;
-	    var ycoord = this.y-d;
-	    context.drawImage(this.sprite, xcoord, ycoord);
+	    var xcoord = this.x1-d;
+	    var ycoord = this.y1-d;
+	    //var pic = new Image();
+	    //pic.src = "pics/knight-small.png";
+	    //pic.onload = function() {
+	    //    context.drawImage(pic, xcoord, ycoord)
+	    //};
+	    var pic = document.getElementById(this.sprite);
+	    context.drawImage(pic, xcoord, ycoord);
 	    
     },
     
 
-    animate: function(context, x2, y2, frameLength) {
-        console.log("animate function"  + " " + this.x + "," + this.y + " to: " + x2 + "," + y2)
-        // maybe in the future try and have acceleration rather than just a set velocity
-        var x1 = this.x;
-        var y1 = this.y;
-        var speed = this.speed;
-        var dx = x2 - x1;
-        var dy = y2 - y1;
-        var dt = Math.floor(Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2)));
-        var frameLength = frameLength;
-        var frameCount = 0;
-        var animTime = dt/speed;
-        var finalFrame = Math.floor(animTime*1000/frameLength)
-        var timeElapsed = 0;
-        var character = this;
-        // i used all of these variables because I thought it would be easier than referencing them from character each time
-        setInterval(function() {singleFrame(character, x1, y1, x2, y2, dx, dy, frameLength, finalFrame, frameCount);}, frameLength);
+    move: function(frameLength) {
+        var self = this;
+        if (this.x1 == this.x2 || this.y1 == this.y2) { return 0; };
+        // console.log("moving from " + self.x1 + ", " + self.y1 + " to " + self.x2 + ", " + self.y2);
+        var dx = this.x2 - this.x1;
+        var dy = this.y2 - this.y1;
+        var angle = Math.atan(dy/dx);
+        var speedInMS = this.speed/1000;
+        // var dt = Math.floor(Math.sqrt(dx*dx+dy*dy));
+        var dt = Math.round(dx/Math.cos(angle));
+        
+        // moveT is how much the character should move in a single frame
+        var moveT = speedInMS*frameLength;
+        
+        // if x is negative, moveT should be negative
+        if (Math.abs(dx) == dx*-1) { moveT *= -1 }
+        
+        var moveX = Math.cos(angle)*moveT;
+        var moveY = Math.sin(angle)*moveT;
+        if (Math.abs(moveT) >= Math.abs(dt)) {
+            this.x1 = this.x2;
+            this.y1 = this.y2;
+        } else {
+        this.x1 += moveX;
+        this.y1 += moveY;
+        }
     }
 
 });
