@@ -11,7 +11,7 @@ $.extend(Map.prototype, {
     h: null,
     numTiles: null,
     materials: [],
-    materialSrc: [],
+    materialPics: [],
     
     init: function(context, width, height, tileSize, tileType) {
 	    this.context = context;
@@ -22,18 +22,11 @@ $.extend(Map.prototype, {
 	    this.numTiles = this.w * this.h;
 	    
 	    // array of material types
-	    this.materials[0] = "dirt";
-	    this.materials[1] = "water";
-	    this.materials[2] = "rock";
-	    this.materials[3] = "mountain";
+	    this.materialPics[0] = document.getElementById("dirt" + this.tileSize);
+	    this.materialPics[1] = document.getElementById("water" + this.tileSize);
+	    this.materialPics[2] = document.getElementById("rock" + this.tileSize);
+	    this.materialPics[3] = document.getElementById("mountain" + this.tileSize);
 	    
-	    // preload image for each material
-	    for (i=0 ; i<=3; ++i) {
-	        // this.materials[i] = new Image();
-	        var src = "pics/" + this.materials[i] + this.tileSize + ".png";
-	        this.materialSrc[i] = src;
-	        
-	    }
 	    
 	    // console.log("Making Map:");
         // logTime();
@@ -54,17 +47,15 @@ $.extend(Map.prototype, {
         for(var i=0; i<this.numTiles; i++) {
             this.tiles[i].draw(this);
         }
-	    // console.log("Finished Drawing Map:");
+	    console.log("Finished Drawing Map:");
 	    // logTime();
-	    
     },
     
     findTile: function(x, y) {
-        console.log("findTile function" + " x: " + x + " y: " + y);
+        // console.log("findTile function" + " x: " + x + " y: " + y);
         // tx and ty are for the tile's x and y coords on the map, not the pixel on the screen  
         var tx = Math.floor(x / this.tileSize);
         var ty = Math.floor(y / this.tileSize);
-        
         var tileNum = (this.w*ty+tx);
         var tile = this.tiles[tileNum];
         

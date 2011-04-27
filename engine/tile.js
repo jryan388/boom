@@ -8,7 +8,7 @@ $.extend(Tile.prototype, {
     y: null,
     z: null,
     size: null,
-    material:"dirt",
+    material:0,
     image:null,
     
     init: function(x,y,z, size, material) {
@@ -18,18 +18,15 @@ $.extend(Tile.prototype, {
 	    this.z = z;
 	    this.size = size;
 	    this.material = material;
-	    this.image = new Image();
 	    
     },
     
     draw: function(map) {
         
         //map.context.clearRect(this.x, this.y, this.size, this.size);
-        
         var self = this;
         
-        var pic = document.getElementById(map.materials[this.material] + this.size);
-        map.context.drawImage(pic, self.x, self.y);
+        map.context.drawImage(map.materialPics[self.material], self.x, self.y);
         
         //var pic = new Image();
 	    //pic.src = map.materialSrc[self.material]
