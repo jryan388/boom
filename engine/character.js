@@ -1,5 +1,5 @@
-Character = function(x, y, size, speed, sprite) {
-    this.init(x, y, size, speed, sprite);
+Character = function(x, y, size, speed, sprite, map) {
+    this.init(x, y, size, speed, sprite, map);
 }
 
 $.extend(Character.prototype, {
@@ -9,8 +9,9 @@ $.extend(Character.prototype, {
     size: null,
     speed: null,
     sprite: null,
+    map: null,
     
-    init: function(x1, y1, size, speed, sprite) {
+    init: function(x1, y1, size, speed, sprite, map) {
 	// do initialization here
     	this.x1 = x1;
     	this.y1 = y1;
@@ -18,42 +19,45 @@ $.extend(Character.prototype, {
     	this.y2 = y1;
 	    this.size = size;
 	    this.speed = speed;
+	    this.map = map;
 	    this.sprite = document.getElementById(sprite);
-	    console.log("drawing character " + sprite);
+	    
 	    
     },
     
-    draw: function(context) {
+    draw: function() {
         var self = this;
         // console.log("draw function " + self.x1 + " " + self.y1);
 	    var d = Math.floor(this.size/2);
-	    var xcoord = this.x1-d;
-	    var ycoord = this.y1-d;
-	    context.drawImage(self.sprite, xcoord, ycoord);
+	    var xcoord = (this.x1-d)-this.map.x*this.map.tileSize;
+	    var ycoord = (this.y1-d)-this.map.y*this.map.tileSize;
+	    this.map.context.drawImage(self.sprite, xcoord, ycoord);
 	    
     },
     
-    drawTiles: function(map) {
+    drawTiles: function() {
         if ((this.x1 == this.x2) && (this.y1 == this.y2)) {return 0;}
         var d = Math.floor(this.size/2);
         var canvas = document.getElementById('game-canvas');
         var width = canvas.width;
         var height = canvas.height;
         // four corners of the character's image
-        var x1 = this.x1-d;
-        var x2 = this.x1+d;
-        var y1 = this.y1-d;
-        var y2 = this.y1+d;
-        //console.log((x1 > 0) && (x1 < width));
-        //console.log((x2 > 0) && (x2 < width));
-        //console.log((y1 > 0) && (y1 < height));
-        //console.log((y2 > 0) && (y2 < height));
-        //console.log("foo " + (0 < x1 < width));
-        //console.log("foo " + ((0<x1) && (x1<width)));
-        if ((0<x1)&&(x1<width) && (0<y1)&&(y1<height)) { map.findTile(x1, y1).draw(map); }
-        if ((0<x2)&&(x2<width) && (0<y1)&&(y1<height)) { map.findTile(x2, y1).draw(map); }
-        if ((0<x1)&&(x1<height) && (0<y2)&&(y2<height)) { map.findTile(x1, y2).draw(map); }
-        if ((0<x2)&&(x2<height) && (0<y2)&&(y2<height)) { map.findTile(x2, y2).draw(map); }
+        var x1 = this.x1-d-this.map.x*this.map.tileSize;
+        var x2 = this.x1+d-this.map.x*this.map.tileSize;
+        var y1 = this.y1-d-this.map.y*this.map.tileSize;
+        var y2 = this.y1+d-this.map.y*this.map.tileSize;
+        if ((0<x1)&&(x1<width) && (0<y1)&&(y1<height)) { 
+            this.map.findTile(x1, y1).draw(); 
+        }
+        if ((0<x2)&&(x2<width) && (0<y1)&&(y1<height)) { 
+            this.map.findTile(x2, y1).draw(); 
+        }
+        if ((0<x1)&&(x1<height) && (0<y2)&&(y2<height)) { 
+            this.map.findTile(x1, y2).draw(); 
+        }
+        if ((0<x2)&&(x2<height) && (0<y2)&&(y2<height)) { 
+            this.map.findTile(x2, y2).draw(); 
+        }
     },
 
     move: function(frameLength) {

@@ -1,5 +1,5 @@
-Tile = function(x, y, z, size, material) {
-    this.init(x,y,z, size, material);
+Tile = function(x, y, z, size, material, map) {
+    this.init(x,y,z, size, material, map);
 }
 
 $.extend(Tile.prototype, {
@@ -9,38 +9,36 @@ $.extend(Tile.prototype, {
     z: null,
     size: null,
     material:0,
-    image:null,
+    map:null,
     
-    init: function(x,y,z, size, material) {
+    init: function(x,y,z, size, material, map) {
 	    // do initialization here
 	    this.x = x;
 	    this.y = y;
 	    this.z = z;
 	    this.size = size;
-	    this.material = material;
+	    this.map = map;
+	    this.material = this.getMat(this.x+map.x, this.y+map.y);
 	    
     },
     
-    draw: function(map) {
+    draw: function() {
+    
+        var map = this.map
         
-        //map.context.clearRect(this.x, this.y, this.size, this.size);
+        map.context.clearRect(this.x*this.size, this.y*this.size, this.size, this.size);
         var self = this;
         
-        map.context.drawImage(map.materialPics[self.material], self.x, self.y);
+        map.context.drawImage(map.materialPics[self.material], self.x*self.size, self.y*self.size);
         
-        //var pic = new Image();
-	    //pic.src = map.materialSrc[self.material]
-	    //pic.onload = function() { 
-	    //    map.context.drawImage(pic, self.x, self.y); 
-	    //};
-	    
-	    //console.log(map.materialPics[self.material]);
-	    //map.context.drawImage(map.materialPics[self.material], self.x, self.y);
-	    
-	    //this.image.src = map.materialSrc[self.material];
-	    
-	    
     },
     
+    getMat: function(x, y) {
+        var sinX = Math.sin(x/5);
+        var cosY = Math.cos(y/5);
+        var product = sinX*cosY;
+        var resultMat = (product > 0) ? 1 : 0;
+        return resultMat;
+    }
 
 });

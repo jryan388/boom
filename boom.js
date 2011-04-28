@@ -3,16 +3,6 @@ var y = null;
 var xoff = null;
 var yoff = null;
 
-// var logTime = function() { var date = new Date; var time = date.getTime(); console.log(time);}
-// logTime();
-
-
-// create character array and add characters
-
-
-
-
-
 $(function() {
     xoff = $("#game-canvas").offset().left;
     yoff = $("#game-canvas").offset().top;
@@ -24,18 +14,17 @@ $(function() {
     var frameLength = Math.round(1000/fps);
     
     // initialize map
-    var map = new Map(context, canvas.width, canvas.height, 20);
+    var map = new Map(0, 0, context, canvas.width, canvas.height, 20);
     var chars = new Array();
-    map.findTile(200,200).material = 1;
     
-    // initialize new character cat, in location 50,50 with 20 pix^2 as size, 200 pixels/sec speed, and path to sprite
-    var cat = new Character(50, 50, 20, 200, "knight-small");
+    // initialize new character cat, in location 50,50 with 20 pix^2 as size, 200 pixels/sec speed, path to sprite, and map
+    var cat = new Character(50, 50, 20, 200, "knight-small", map);
     chars.push(cat);
     
     // render!
     $(window).load(function() { map.draw(); } );
     
-    setInterval(function() {render(map, chars, frameLength)}, frameLength);
+    setInterval(function() {render(chars, frameLength)}, frameLength);
     
     
     
@@ -47,9 +36,36 @@ $(function() {
 	    y = (event.pageY-yoff);
         msg += x + ", " + y;
 	    console.log(msg);
-	    cat.x2=x;
-	    cat.y2=y;
+	    cat.x2=x+map.x*map.tileSize;
+	    cat.y2=y+map.y*map.tileSize;
+	   
 	
+    });
+    
+    
+    $(document).keypress(function(e) { 
+
+        var keyPressed = (e.keyCode ? e.keyCode : e.which);
+        console.log(e.keyCode);
+        switch(keyPressed) {
+            // hotkeys for changing material
+            case 97: // a
+                console.log("Handler for .keypress() for a called");
+                map.reMake(map.x-1, map.y);
+                break;
+            case 100: // d
+                console.log("Handler for .keypress() for d called");
+                map.reMake(map.x+1, map.y);
+                break;
+            case 115: // s
+                console.log("Handler for .keypress() for d called");
+                map.reMake(map.x, map.y+1);
+                break;
+            case 119: // w
+                console.log("Handler for .keypress() for d called");
+                map.reMake(map.x, map.y-1);
+                break;
+        }
     });
     
     

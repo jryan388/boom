@@ -1,9 +1,11 @@
-Map = function(context, width, height, tileSize) {
-    this.init(context, width, height, tileSize);
+Map = function(x, y, context, width, height, tileSize) {
+    this.init(x, y, context, width, height, tileSize);
 }
 
 $.extend(Map.prototype, {
     // object variables
+    x: null,
+    y: null,
     context: null,
     tileSize: null,
     tiles: [],
@@ -13,7 +15,9 @@ $.extend(Map.prototype, {
     materials: [],
     materialPics: [],
     
-    init: function(context, width, height, tileSize, tileType) {
+    init: function(x, x, context, width, height, tileSize, tileType) {
+        this.x = x;
+        this.y = y;
 	    this.context = context;
 	    this.tileSize = tileSize;
 	    this.w = width/this.tileSize;
@@ -21,34 +25,36 @@ $.extend(Map.prototype, {
 	
 	    this.numTiles = this.w * this.h;
 	    
-	    // array of material types
+	    
+	    for(var i=0; i<this.numTiles; i++) {
+	        var w = i%this.w;
+	        var h = Math.floor(i/this.w);
+	        var tile = new Tile(w, h, 0, tileSize, 0, this);
+	        this.tiles.push(tile);
+	    }
+	    
 	    this.materialPics[0] = document.getElementById("dirt" + this.tileSize);
 	    this.materialPics[1] = document.getElementById("water" + this.tileSize);
 	    this.materialPics[2] = document.getElementById("rock" + this.tileSize);
 	    this.materialPics[3] = document.getElementById("mountain" + this.tileSize);
-	    
-	    
-	    // console.log("Making Map:");
-        // logTime();
-	    for(var i=0; i<this.numTiles; i++) {
-	        var w = i%this.w;
-	        var h = Math.floor(i/this.w);
-	        var tile = new Tile(w*this.tileSize, h*this.tileSize, 0, tileSize, 0);
-	        this.tiles.push(tile);
+    },
+    
+    reMake:function(x, y) {
+        this.x = x;
+        this.y = y;
+        for(var i=0; i<this.numTiles; i++) {
+	        var tile = this.tiles[i];
+	        var self = this;
+	        tile.material = tile.getMat(self.x+tile.x, self.y+tile.y);
 	    }
-	    // console.log("Finished Making Map:");
-        // logTime();
+	    this.draw();
     },
     
     draw: function() {
-        // console.log("Drawing Map:");
-        // logTime();
         // this.context.clearRect(0, 0, this.w*this.tileSize, this.h*this.tileSize);
         for(var i=0; i<this.numTiles; i++) {
             this.tiles[i].draw(this);
         }
-	    console.log("Finished Drawing Map:");
-	    // logTime();
     },
     
     findTile: function(x, y) {
@@ -61,23 +67,4 @@ $.extend(Map.prototype, {
         
         return tile;
     },
-    
-    randomize: function(numRivers, numMountains, percentRocks) {
-        console.log("randomMap function" + numRivers + " " + numMountains + " " + percentRocks);
-        for (i = 0; i < numRivers; ++i) {
-            
-            // randAxis is 0 for x, 1 for y
-            var randAxis = Math.floor(Math.random()*2);
-            var randStartPixel = (randAxis == 0) ? Math.floor(Math.random()*(this.w*this.tileSize+1)) : Math.floor(Math.random()*(this.h*this.tileSize+1));
-            
-            // startile is random tile on either the x or y axis
-            console.log(randAxis + " " + randStartPixel);
-            
-            
-            var startTile = (randAxis == 1) ? this.findTile(randStartPixel, 1) : this.findTile(1, randStartPixel);
-            startTile.material = "water";
-            startTile.draw(this.context);
-        }
-    }
 });
-1
